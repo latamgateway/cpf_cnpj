@@ -2,6 +2,9 @@
 
 require "./lib/cpf_cnpj/version"
 
+version_path = File.join(File.dirname(__FILE__), 'VERSION')
+cpf_cnpj_version = File.read(version_path).strip
+
 Gem::Specification.new do |spec|
   spec.authors       = ["Nando Vieira"]
   spec.email         = ["fnando.vieira@gmail.com"]
@@ -18,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.name          = "cpf_cnpj"
   spec.require_paths = ["lib"]
-  spec.version       = CPF::VERSION
+  spec.version = cpf_cnpj_version
 
   spec.add_development_dependency "minitest-utils"
   spec.add_development_dependency "pry-meta"
