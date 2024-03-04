@@ -10,8 +10,6 @@ on:
         description: 'Tag to publish'
         required: true
 
-env:
-  PACKAGE_NAME: cpf_cnpj
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
@@ -23,22 +21,30 @@ jobs:
         with:
           ruby-version: '2.7.6'
 
+      - name: Extract tag
+        id: get_version
+        run: |
+          export VERSION=${{ github.event.inputs.tag }}
+          if [ -z "$VERSION" ]; then
+            VERSION=$(echo ${{ github.ref }} | sed -e 's/refs\/tags\///')
+          fi
+          echo $VERSION > VERSION
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
       - name: Build Package
         run: |
-          echo ${{ github.event.inputs.tag }} > VERSION
           gem build
 
-      - name: Extract tag name
-        id: get_version
-        run: echo "VERSION=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
-
-      - name: Publish to GitHub Packages
+      - name: Ruby Setup
         uses: ruby/setup-ruby@v1
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_PACKAGES }}
         with:
           ruby-version: '2.7.6'
-      - run: |
+
+      - name: Publish Package
+        run: |
+          export PACKAGE_NAME=$(grep -o "spec.name\s*=\s*'.*'" *.gemspec | cut -d"'" -f2)
           echo ":github: ${{ secrets.GH_TOKEN_PACKAGES }}" > ~/.gem/credentials
           chmod 600 ~/.gem/credentials
-          gem push ${{ env.PACKAGE_NAME }}-${{ steps.get_version.outputs.VERSION }}.gem --key github --host https://rubygems.pkg.github.com/${{ github.repository_owner }}
+          gem push ${PACKAGE_NAME}-${{ steps.get_version.outputs.VERSION }}.gem --key github --host https://rubygems.pkg.github.com/${{ github.repository_owner }}
