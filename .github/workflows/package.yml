@@ -44,7 +44,7 @@ jobs:
 
       - name: Publish Package
         run: |
-          export PACKAGE_NAME=$(grep -o "spec.name\s*=\s*'.*'" *.gemspec | cut -d"'" -f2)
+          export PACKAGE_NAME=$(grep -o "spec.name\s*=\s*['\"].*['\"]" *.gemspec | sed "s/spec.name\s*=\s*['\"]\(.*\)['\"]/\1/")
           echo ":github: ${{ secrets.GH_TOKEN_PACKAGES }}" > ~/.gem/credentials
           chmod 600 ~/.gem/credentials
           gem push ${PACKAGE_NAME}-${{ steps.get_version.outputs.VERSION }}.gem --key github --host https://rubygems.pkg.github.com/${{ github.repository_owner }}
