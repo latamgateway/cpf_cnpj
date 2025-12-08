@@ -24,7 +24,6 @@ module CpfCnpj
       @options ||= {}
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def process_command
       opts.banner = "Usage: #{bin_name} [options] [#{document_name} number]"
       opts.separator ""

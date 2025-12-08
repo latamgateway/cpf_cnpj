@@ -2,8 +2,8 @@
 
 class CNPJ
   class Formatter
-    STRICT_REGEX = %r{[/.-]}.freeze
-    LOOSE_REGEX = /[^\d]/.freeze
+    STRICT_REGEX = %r{[/.-]}
+    LOOSE_REGEX = /[^\d]/
 
     def self.format(number)
       strip(number)

@@ -7,8 +7,8 @@ class CNPJ
 
   attr_reader :number, :strict
 
-  REGEX = %r[\A\d{2}\.\d{3}.\d{3}/\d{4}-\d{2}\Z].freeze
-  VALIDATION_SIZE_REGEX = /^\d{14}$/.freeze
+  REGEX = %r[\A\d{2}\.\d{3}.\d{3}/\d{4}-\d{2}\Z]
+  VALIDATION_SIZE_REGEX = /^\d{14}$/
   NUMBER_SIZE = 12
 
   BLACKLIST = %w[
@@ -55,8 +55,8 @@ class CNPJ
   end
 
   def valid?
-    return unless stripped =~ VALIDATION_SIZE_REGEX
-    return if BLACKLIST.include?(stripped)
+    return false unless VALIDATION_SIZE_REGEX.match?(stripped)
+    return false if BLACKLIST.include?(stripped)
 
     digits = numbers[0...12]
     digits << VerifierDigit.generate(digits)
@@ -66,7 +66,7 @@ class CNPJ
   end
 
   def ==(other)
-    super || other.instance_of?(self.class) && other.stripped == stripped
+    super || (other.instance_of?(self.class) && other.stripped == stripped)
   end
   alias eql? ==
 
