@@ -8,9 +8,7 @@ module CPFCli
 
     %w[-c --check].each do |switch|
       test "checks if provided number is valid [using #{switch}]" do
-        exit_status, stdout = capture_syscall do
-          system "bundle exec ruby ./bin/cpf #{switch} 76616598837"
-        end
+        exit_status, stdout, _stderr = capture_cli(CPF, [switch, "76616598837"])
 
         assert_equal 0, exit_status
         assert_equal "", stdout
@@ -95,9 +93,7 @@ module CPFCli
 
     %w[-f --format].each do |switch|
       test "formats argument [using #{switch}]" do
-        exit_status, stdout = capture_syscall do
-          system "bundle exec ruby ./bin/cpf #{switch} 76616598837"
-        end
+        exit_status, stdout, _stderr = capture_cli(CPF, [switch, "76616598837"])
 
         assert_equal 0, exit_status
         assert_includes stdout, "766.165.988-37"

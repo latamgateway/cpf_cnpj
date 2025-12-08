@@ -8,9 +8,8 @@ module CNPJCli
 
     %w[-c --check].each do |switch|
       test "checks if provided number is valid [using #{switch}]" do
-        exit_status, stdout = capture_syscall do
-          system "bundle exec ruby ./bin/cnpj #{switch} 54550752000155"
-        end
+        exit_status, stdout, _stderr = capture_cli(CNPJ,
+                                                   [switch, "54550752000155"])
 
         assert_equal 0, exit_status
         assert_equal "", stdout
@@ -95,9 +94,8 @@ module CNPJCli
 
     %w[-f --format].each do |switch|
       test "formats argument [using #{switch}]" do
-        exit_status, stdout = capture_syscall do
-          system "bundle exec ruby ./bin/cnpj #{switch} 54550752000155"
-        end
+        exit_status, stdout, _stderr = capture_cli(CNPJ,
+                                                   [switch, "54550752000155"])
 
         assert_equal 0, exit_status
         assert_includes stdout, "54.550.752/0001-55"
