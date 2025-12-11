@@ -26,7 +26,7 @@ jobs:
         run: |
           export VERSION=${{ github.event.inputs.tag }}
           if [ -z "$VERSION" ]; then
-            VERSION=$(echo ${{ github.ref }} | sed -e 's/refs\/tags\///')
+            VERSION=$(echo ${{ github.ref }} | sed -e 's/refs\/tags\///; s/^v//')
           fi
           echo $VERSION > VERSION
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
