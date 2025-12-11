@@ -7,8 +7,8 @@ class CNPJ
 
   attr_reader :number, :strict
 
-  REGEX = %r[\A\d{2}\.\d{3}.\d{3}/\d{4}-\d{2}\Z]
-  VALIDATION_SIZE_REGEX = /^\d{14}$/
+  REGEX = %r[\A\d{2}\.\d{3}.\d{3}/\d{4}-\d{2}\Z].freeze
+  VALIDATION_SIZE_REGEX = /^\d{14}$/.freeze
   NUMBER_SIZE = 12
 
   BLACKLIST = %w[

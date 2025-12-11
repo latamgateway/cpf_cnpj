@@ -7,8 +7,8 @@ class CPF
 
   attr_reader :number, :strict
 
-  REGEX = /\A\d{3}\.\d{3}\.\d{3}-\d{2}\Z/
-  VALIDATION_SIZE_REGEX = /^[0-9]{11}$/
+  REGEX = /\A\d{3}\.\d{3}\.\d{3}-\d{2}\Z/.freeze
+  VALIDATION_SIZE_REGEX = /^[0-9]{11}$/.freeze
   NUMBER_SIZE = 9
 
   BLACKLIST = %w[
