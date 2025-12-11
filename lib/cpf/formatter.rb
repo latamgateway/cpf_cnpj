@@ -2,8 +2,8 @@
 
 class CPF
   class Formatter
-    STRICT_REGEX = /[.-]/.freeze
-    LOOSE_REGEX = /[^\d]/.freeze
+    STRICT_REGEX = /[.-]/
+    LOOSE_REGEX = /[^\d]/
 
     def self.format(number)
       strip(number).gsub(/\A(\d{3})(\d{3})(\d{3})(\d{2})\Z/, "\\1.\\2.\\3-\\4")
