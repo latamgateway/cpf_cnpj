@@ -7,7 +7,10 @@ class CNPJ
 
     def self.format(number)
       stripped = strip(number)
-      stripped.gsub(/\A([A-Z\d]{2})([A-Z\d]{3})([A-Z\d]{3})([A-Z\d]{4})(\d{2})\Z/i, "\\1.\\2.\\3/\\4-\\5")
+      stripped.gsub(
+        /\A([A-Z\d]{2})([A-Z\d]{3})([A-Z\d]{3})([A-Z\d]{4})(\d{2})\Z/i,
+        "\\1.\\2.\\3/\\4-\\5"
+      )
     end
 
     def self.strip(number, strict = false)
