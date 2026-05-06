@@ -7,8 +7,10 @@ class CNPJ
 
   attr_reader :number, :strict
 
-  REGEX = %r[\A\d{2}\.\d{3}.\d{3}/\d{4}-\d{2}\Z].freeze
-  VALIDATION_SIZE_REGEX = /^\d{14}$/.freeze
+  # Formatted: XX.XXX.XXX/XXXX-DD (X = alphanumeric, D = digit)
+  REGEX = %r[\A[A-Z\d]{2}\.[A-Z\d]{3}\.[A-Z\d]{3}/[A-Z\d]{4}-\d{2}\Z]i.freeze
+  # Stripped: 12 alphanumeric chars + 2 numeric digits
+  VALIDATION_SIZE_REGEX = /\A[A-Z\d]{12}\d{2}\Z/i.freeze
   NUMBER_SIZE = 12
 
   BLACKLIST = %w[
@@ -42,7 +44,7 @@ class CNPJ
   def number=(number)
     @stripped = nil
     @formatted = nil
-    @numbers = nil
+    @characters = nil
     @number = number
   end
 
@@ -55,14 +57,16 @@ class CNPJ
   end
 
   def valid?
-    return false unless VALIDATION_SIZE_REGEX.match?(stripped)
-    return false if BLACKLIST.include?(stripped)
+    normalized = stripped.upcase
+    return false unless /\A[A-Z\d]{12}\d{2}\Z/.match?(normalized)
+    return false if BLACKLIST.include?(normalized)
 
-    digits = numbers[0...12]
-    digits << VerifierDigit.generate(digits)
-    digits << VerifierDigit.generate(digits)
+    chars = normalized[0...12].each_char.to_a
+    dv1 = VerifierDigit.generate(chars)
+    chars << dv1.to_s
+    dv2 = VerifierDigit.generate(chars)
 
-    digits[-2, 2] == numbers[-2, 2]
+    "#{dv1}#{dv2}" == normalized[-2, 2]
   end
 
   def ==(other)
@@ -70,7 +74,7 @@ class CNPJ
   end
   alias eql? ==
 
-  private def numbers
-    @numbers ||= stripped.each_char.to_a.map(&:to_i)
+  private def characters
+    @characters ||= stripped.upcase.each_char.to_a
   end
 end

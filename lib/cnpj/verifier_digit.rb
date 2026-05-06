@@ -2,11 +2,19 @@
 
 class CNPJ
   class VerifierDigit
-    def self.generate(numbers)
+    ASCII_BASE = "0".ord
+
+    # Accepts an array of characters (strings) or integers.
+    # For alphanumeric CNPJ, each character's value is (char.ord - 48).
+    def self.generate(chars)
+      values = chars.map do |c|
+        c.is_a?(Integer) ? c : (c.ord - ASCII_BASE)
+      end
+
       index = 2
 
-      sum = numbers.reverse.reduce(0) do |buffer, number|
-        (buffer + (number * index)).tap do
+      sum = values.reverse.reduce(0) do |buffer, value|
+        (buffer + (value * index)).tap do
           index = index == 9 ? 2 : index + 1
         end
       end

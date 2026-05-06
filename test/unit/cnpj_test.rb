@@ -50,12 +50,41 @@ class CnpjTest < Minitest::Test
     assert_match(/\A\d{14}\z/, CNPJ.generate)
   end
 
-  test "rejects strings" do
+  test "validates alphanumeric CNPJ formatted" do
+    assert CNPJ.valid?("12.ABC.345/01DE-35")
+  end
+
+  test "validates alphanumeric CNPJ unformatted" do
+    assert CNPJ.valid?("12ABC34501DE35")
+  end
+
+  test "validates all-letters CNPJ" do
+    assert CNPJ.valid?("ABCDEFGHIJKL80")
+  end
+
+  test "validates alphanumeric CNPJ case insensitive" do
+    assert CNPJ.valid?("12.abc.345/01de-35")
+  end
+
+  test "rejects alphanumeric CNPJ with invalid DV" do
+    refute CNPJ.valid?("ABCDEFGHIJKL81")
+  end
+
+  test "rejects alphanumeric CNPJ with letter in DV position" do
+    refute CNPJ.valid?("0000000000019L")
+    refute CNPJ.valid?("000000000001P1")
+  end
+
+  test "rejects invalid format strings" do
     refute CNPJ.valid?("aa.bb.ccc/dddd-ee")
   end
 
-  test "rejects strings (strict)" do
+  test "rejects invalid format strings (strict)" do
     refute CNPJ.valid?("aa.bb.ccc/dddd-ee", strict: true)
+  end
+
+  test "rejects zeroed alphanumeric CNPJ" do
+    refute CNPJ.valid?("00.000.000/0000-00")
   end
 
   test "compare objects by their numeric value" do

@@ -14,6 +14,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-05-06
+
+### Added
+- Support for alphanumeric CNPJ (format `XX.XXX.XXX/XXXX-DD` where X = A-Z or 0-9, D = 0-9)
+- Validation of new alphanumeric CNPJ using ASCII-based check digit algorithm per Receita Federal specification
+- Case-insensitive validation for alphanumeric CNPJs
+- Formatting support for alphanumeric CNPJs
+
+### Changed
+- `CNPJ::VerifierDigit.generate` now accepts character arrays (strings) in addition to integers
+- `CNPJ::Formatter` updated to preserve alphabetic characters during strip/format operations
+- Verified compatibility with Ruby 2.7 through 3.4.x
+
 ## [2.0.0] - 2025-12-08
 
 ### Changed
@@ -43,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI tools for CPF and CNPJ
 - Comprehensive tests
 
-[Unreleased]: https://github.com/latamgateway/cpf_cnpj/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/latamgateway/cpf_cnpj/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/latamgateway/cpf_cnpj/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/latamgateway/cpf_cnpj/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/latamgateway/cpf_cnpj/releases/tag/v1.0.0

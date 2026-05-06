@@ -3,6 +3,8 @@
 require "./lib/cpf_cnpj/version"
 
 Gem::Specification.new do |spec|
+  spec.name          = "latamgateway_cpf_cnpj"
+  spec.version       = CpfCnpj::VERSION
   spec.authors       = ["Gowd Instituição de Pagamentos Ltda"]
   spec.email         = ["engineering@gowd.com"]
   spec.description   = "Validate, generate and format CPF/CNPJ numbers. " \
